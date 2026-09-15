@@ -1,0 +1,253 @@
+.accounts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 3 Summary Cards */
+.accounts-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.account-metric-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.account-metric-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-metric-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.account-metric-val {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.4px;
+}
+
+.account-metric-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Toolbar */
+.accounts-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.accounts-search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 420px;
+}
+
+.accounts-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  width: 16px;
+  height: 16px;
+}
+
+.accounts-search-input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.accounts-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.accounts-filter-select {
+  padding: 10px 16px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: #334155;
+  outline: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Accounts Table Card */
+.accounts-table-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.accounts-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.accounts-table th {
+  padding: 16px 22px;
+  background-color: #fafbfc;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.accounts-table td {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13.5px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.accounts-table tr:last-child td {
+  border-bottom: none;
+}
+
+.accounts-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Account ID Cell */
+.acc-id-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-weight: 500;
+  color: #475569;
+}
+
+.acc-copy-btn {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+
+.acc-copy-btn:hover {
+  color: var(--primary);
+}
+
+/* Account Name Cell */
+.acc-name-cell {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+/* Environment Badges */
+.acc-env-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.acc-env-prod {
+  background-color: #ecfdf5;
+  color: #059669;
+  border: 1px solid #d1fae5;
+}
+
+.acc-env-qa {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #dbeafe;
+}
+
+.acc-env-dev {
+  background-color: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fef3c7;
+}
+
+.acc-env-other {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+/* Cost Cell */
+.acc-cost-cell {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 14px;
+}
+
+/* Trend Cell */
+.acc-trend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.acc-trend-up {
+  background-color: #ecfdf5;
+  color: #059669;
+}
+
+.acc-trend-down {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* Table Footer */
+.accounts-table-footer {
+  padding: 14px 22px;
+  background-color: #fafbfc;
+  border-top: 1px solid var(--border-color);
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

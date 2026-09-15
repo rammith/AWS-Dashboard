@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: aws_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aws_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 4049
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: aws_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env.docker
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    container_name: aws_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

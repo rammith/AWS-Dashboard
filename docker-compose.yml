@@ -3,10 +3,8 @@ services:
     image: postgres:16
     container_name: aws_postgres
     restart: unless-stopped
-    environment:
-      POSTGRES_DB: aws_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 4049
+    env_file:
+      - ./backend/.env.docker
     ports:
       - "5433:5432"
     volumes:

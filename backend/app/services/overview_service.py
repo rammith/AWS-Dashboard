@@ -3,7 +3,7 @@ from datetime import date
 
 from app.dal.overview_dal import get_total_cost
 from app.dal.overview_dal import get_total_accounts,get_average_daily_cost,get_cost_by_account
-from app.dal.overview_dal import get_cost_trend,get_cost_by_environment,get_cost_forecast
+from app.dal.overview_dal import get_cost_trend,get_cost_by_environment
 from app.dal.overview_dal import get_cost_by_service
 
 from app.ml.cost_forecast.linear_regression import (
@@ -183,25 +183,6 @@ def calculate_cost_forecast(
     cost for the next month.
     """
 
-    # --------------------------------------------------
-    # 1. Get historical monthly costs from the DAL
-    # --------------------------------------------------
-
-    data = get_cost_forecast(
-        db,
-        month,
-    )
-
-    historical_costs = [
-        float(row.total_cost)
-        for row in data
-        if row.total_cost is not None
-    ]
-
-    # --------------------------------------------------
-    # 2. Calculate the next month
-    # --------------------------------------------------
-
     if month.month == 12:
         next_month = date(
             month.year + 1,
@@ -215,86 +196,9 @@ def calculate_cost_forecast(
             1,
         )
 
-    # --------------------------------------------------
-    # 3. Check minimum six months
-    # --------------------------------------------------
-
-    if len(historical_costs) < 6:
-        return {
-            "month": next_month,
-            "forecast_cost": 0,
-        }
-
-    # --------------------------------------------------
-    # 4. Train ML model and get only forecast value
-    # --------------------------------------------------
-
-    forecast_cost = forecast_next_month(
-        historical_costs
-    )
-
-    # --------------------------------------------------
-    # 5. Return only the next month and forecast value
-    # --------------------------------------------------
+    forecast_cost = forecast_next_month(next_month)
 
     return {
         "month": next_month,
         "forecast_cost": forecast_cost,
     }
-
-
-
-
-
-
-
-# def calculate_cost_forecast(
-#     db: Session,
-#     month: date
-# ):
-
-#     data = get_cost_forecast(
-#         db,
-#         month
-#     )
-
-#     # Calculate next month
-#     if month.month == 12:
-#         next_month = date(
-#             month.year + 1,
-#             1,
-#             1
-#         )
-#     else:
-#         next_month = date(
-#             month.year,
-#             month.month + 1,
-#             1
-#         )
-
-#     # No historical data
-#     if not data:
-
-#         return {
-#             "month": next_month,
-#             "forecast_cost": 0
-#         }
-
-#     historical_costs = [
-#         row.total_cost or 0
-#         for row in data
-#     ]
-
-#     # Use ALL available historical data
-#     forecast_cost = (
-#         sum(historical_costs)
-#         / len(historical_costs)
-#     )
-
-#     return {
-#         "month": next_month,
-#         "forecast_cost": round(
-#             forecast_cost,
-#             2
-#         )
-#     }

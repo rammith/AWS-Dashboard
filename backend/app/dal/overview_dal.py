@@ -205,28 +205,40 @@ def get_cost_by_environment(db: Session, month):
     return cost_by_environment
 
 
-def get_cost_forecast(db: Session, month: date):
+# def get_cost_forecast(db: Session, month: date):
 
-    selected_month = datetime.combine(
-        month,
-        time.min
-    )
+#     selected_month = datetime.combine(
+#         month,
+#         time.min
+#     )
 
-    historical_data = (
+#     historical_data = (
+#         db.query(
+#             MonthlyCost.month_start,
+#             func.sum(MonthlyCost.total_costs).label("total_cost")
+#         )
+#         .filter(
+#             MonthlyCost.month_start <= selected_month
+#         )
+#         .group_by(
+#             MonthlyCost.month_start
+#         )
+#         .order_by(
+#             MonthlyCost.month_start
+#         )
+#         .all()
+#     )
+
+#     return historical_data
+
+
+def get_all_cost_forecast(db: Session):
+    return (
         db.query(
             MonthlyCost.month_start,
             func.sum(MonthlyCost.total_costs).label("total_cost")
         )
-        .filter(
-            MonthlyCost.month_start <= selected_month
-        )
-        .group_by(
-            MonthlyCost.month_start
-        )
-        .order_by(
-            MonthlyCost.month_start
-        )
+        .group_by(MonthlyCost.month_start)
+        .order_by(MonthlyCost.month_start)
         .all()
     )
-
-    return historical_data

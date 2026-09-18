@@ -38,8 +38,8 @@ function Sidebar({ isCollapsed, setIsCollapsed }) {
 
         {!isCollapsed && (
           <div className="logo-text">
-            <span className="logo-title">AWS Cost</span>
-            <span className="logo-subtitle">Intelligence</span>
+            <span className="logo-title">AWS Dasboard</span>
+            <span className="logo-subtitle">Analyzer</span>
           </div>
         )}
       </div>

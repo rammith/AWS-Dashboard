@@ -9,6 +9,10 @@ env/
 
 # Pytest
 .pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
 pytest_cache/
 
 # IDE / editor

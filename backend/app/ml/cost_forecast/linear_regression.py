@@ -1,34 +1,5 @@
-# from collections.abc import Sequence
-
-# from sklearn.linear_model import LinearRegression
-
-
-# MINIMUM_HISTORY_MONTHS = 6
-
-
-# def forecast_next_month(historical_costs: Sequence[float]) -> float:
-#     if len(historical_costs) < MINIMUM_HISTORY_MONTHS:
-#         raise ValueError(
-#             "At least 6 months of historical data are required "
-#             "for forecasting."
-#         )
-
-#     costs = [float(cost) for cost in historical_costs]
-
-#     # Month numbers: 1, 2, 3, ..., number of historical months
-#     X = [[i] for i in range(1, len(costs) + 1)]
-
-#     model = LinearRegression()
-#     model.fit(X, costs)
-
-#     # Predict the month immediately after the last historical month
-#     next_month_number = len(costs) + 1
-#     prediction = model.predict([[next_month_number]])
-
-#     return round(max(0.0, float(prediction[0])), 2)
-
-
 from collections.abc import Sequence
+from datetime import date
 from math import isfinite
 from pathlib import Path
 
@@ -41,7 +12,7 @@ from sklearn.metrics import (
 )
 
 MODEL_PATH = Path(__file__).with_name("linear_regression_model.joblib")
-MODEL_VERSION = 3
+MODEL_VERSION = 5
 
 
 def _clean_costs(historical_costs: Sequence[float]) -> list[float]:
@@ -59,7 +30,18 @@ def _clean_costs(historical_costs: Sequence[float]) -> list[float]:
     return cleaned_costs
 
 
-def _train_and_save_model(cleaned_costs: list[float]) -> dict:
+def train_and_save_model(
+    historical_costs: Sequence[float],
+    first_month: date,
+) -> dict:
+    cleaned_costs = _clean_costs(historical_costs)
+
+    if len(cleaned_costs) < 6:
+        raise ValueError(
+            "At least 6 months of historical data are required "
+            "for forecasting."
+        )
+
     actual_values = []
     predicted_values = []
     historical_predictions = {}
@@ -115,45 +97,47 @@ def _train_and_save_model(cleaned_costs: list[float]) -> dict:
     model = LinearRegression()
     model.fit(X_final, cleaned_costs)
 
-    next_month_number = len(cleaned_costs) + 1
-    forecast_cost = model.predict([[next_month_number]])[0]
-
     artifact = {
         "version": MODEL_VERSION,
         "model": model,
-        "historical_predictions": historical_predictions,
-        "forecast_cost": round(max(0.0, float(forecast_cost)), 2),
+        "historical_costs": cleaned_costs,
+        "first_month": first_month.isoformat(),
     }
     MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(artifact, MODEL_PATH)
     return artifact
 
 
-def forecast_next_month(
+def ensure_model(
     historical_costs: Sequence[float],
-) -> float:
-    """
-    Load the saved model, training it only when no model has been saved yet.
-    """
-
+    first_month: date,
+) -> None:
     cleaned_costs = _clean_costs(historical_costs)
 
     if len(cleaned_costs) < 6:
-        raise ValueError(
-            "At least 6 months of historical data are required "
-            "for forecasting."
-        )
+        return
 
-    if MODEL_PATH.exists():
-        artifact = joblib.load(MODEL_PATH)
-    else:
-        artifact = None
+    artifact = joblib.load(MODEL_PATH) if MODEL_PATH.exists() else None
 
     if (
         not artifact
         or artifact.get("version") != MODEL_VERSION
-        or "forecast_cost" not in artifact
+        or artifact.get("historical_costs") != cleaned_costs
+        or artifact.get("first_month") != first_month.isoformat()
     ):
-        artifact = _train_and_save_model(cleaned_costs)
+        train_and_save_model(cleaned_costs, first_month)
 
-    return artifact["forecast_cost"]
+
+def forecast_next_month(month: date) -> float:
+    """
+    Load the model trained during application startup.
+    """
+    artifact = joblib.load(MODEL_PATH)
+    first_month = date.fromisoformat(artifact["first_month"])
+    month_number = (
+        (month.year - first_month.year) * 12
+        + month.month - first_month.month
+        + 1
+    )
+    forecast_cost = artifact["model"].predict([[month_number]])[0]
+    return round(max(0.0, float(forecast_cost)), 2)

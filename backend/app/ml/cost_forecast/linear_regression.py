@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from datetime import date
 from math import isfinite
 from pathlib import Path
+import pickle
 
 import joblib
 from sklearn.linear_model import LinearRegression
@@ -12,7 +13,7 @@ from sklearn.metrics import (
 )
 
 MODEL_PATH = Path(__file__).with_name("linear_regression_model.joblib")
-MODEL_VERSION = 5
+MODEL_VERSION = 6
 
 
 def _clean_costs(historical_costs: Sequence[float]) -> list[float]:
@@ -117,7 +118,19 @@ def ensure_model(
     if len(cleaned_costs) < 6:
         return
 
-    artifact = joblib.load(MODEL_PATH) if MODEL_PATH.exists() else None
+    artifact = None
+    if MODEL_PATH.exists():
+        try:
+            artifact = joblib.load(MODEL_PATH)
+        except (
+            AttributeError,
+            EOFError,
+            ImportError,
+            ModuleNotFoundError,
+            ValueError,
+            pickle.UnpicklingError,
+        ):
+            print("Saved forecast model is incompatible; retraining it.")
 
     if (
         not artifact

@@ -11,41 +11,19 @@ from app.ml.cost_forecast.linear_regression import (
 )
 
 
-
-def calculate_total_cost(db: Session, month: date):
+def calculate_overview(db: Session, month: date):
 
     total_cost = get_total_cost(db, month)
 
-    return round(total_cost,2)
-
-
-
-def calculate_total_accounts(db: Session, month: date):
     total_accounts = get_total_accounts(db, month)
 
-    return total_accounts
-
-
-def calculate_average_daily_cost(db: Session, month: date):
-
     average_daily_cost = get_average_daily_cost(db, month)
-
-    return round(average_daily_cost,2)
-
-
-def calculate_overview(db: Session, month: date):
-
-    total_cost = calculate_total_cost(db, month)
-
-    total_accounts = calculate_total_accounts(db, month)
-
-    average_daily_cost = calculate_average_daily_cost(db, month)
 
     return {
         "month": month,
         "total_cost": total_cost,
         "total_accounts": total_accounts,
-        "average_daily_cost": average_daily_cost
+        "average_daily_cost": round(average_daily_cost,2)
     }
 
 

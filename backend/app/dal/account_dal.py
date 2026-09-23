@@ -7,7 +7,6 @@ from app.models.monthly_cost import MonthlyCost
 from app.models.account_environment import AccountEnvironment
 
 
-# API 1: Get total accounts and total monthly cost for a given month
 def get_total_accounts(db: Session, month):
 
     total_accounts = (
@@ -41,7 +40,6 @@ def get_total_monthly_cost(db: Session, month):
 
 
 
-# API 2: Get accounts with their monthly cost and trend compared to the previous month
 def get_accounts_with_cost_and_trend(db: Session, month: date):
 
     if month.month == 1:

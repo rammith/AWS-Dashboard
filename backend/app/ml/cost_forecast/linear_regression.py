@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from datetime import date
 from math import isfinite
 from pathlib import Path
-import pickle
+
 
 import joblib
 from sklearn.linear_model import LinearRegression
@@ -127,8 +127,7 @@ def ensure_model(
             EOFError,
             ImportError,
             ModuleNotFoundError,
-            ValueError,
-            pickle.UnpicklingError,
+            ValueError
         ):
             print("Saved forecast model is incompatible; retraining it.")
 

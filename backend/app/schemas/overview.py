@@ -2,21 +2,6 @@ from pydantic import BaseModel
 from datetime import date
 
 
-class TotalCostResponse(BaseModel):
-    month: date
-    total_cost: float
-
-
-class TotalAccountsResponse(BaseModel):
-    month: date
-    total_accounts: int
-
-
-class AverageDailyCostResponse(BaseModel):
-    month: date
-    average_daily_cost: float
-
-
 class OverviewResponse(BaseModel):
     month: date
     total_cost: float

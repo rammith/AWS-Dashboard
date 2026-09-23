@@ -8,7 +8,7 @@ from app.models.account_environment import AccountEnvironment
 from datetime import date, datetime, time
 
 
-# 1 API
+
 def get_total_cost(db: Session, month):
 
     month_start = datetime.combine(month, time.min)
@@ -23,7 +23,7 @@ def get_total_cost(db: Session, month):
 
 
 
-# 1 API
+
 def get_total_accounts(db: Session, month: date):
 
     total_accounts = (
@@ -36,7 +36,7 @@ def get_total_accounts(db: Session, month: date):
 
 
 
-# 1 API
+
 def get_average_daily_cost(db: Session, month: date):
 
     start_date = datetime.combine(month, time.min)
@@ -69,7 +69,7 @@ def get_average_daily_cost(db: Session, month: date):
     return average_daily_cost or 0
 
 
-# 2 API
+
 def get_cost_by_account(db: Session, month: date):
 
     month_start = datetime.combine(month, time.min)
@@ -90,7 +90,7 @@ def get_cost_by_account(db: Session, month: date):
 
 
 
-# 3 API
+
 def get_cost_trend(db: Session, month: date):
 
     start_date = datetime.combine(month, time.min)
@@ -205,31 +205,6 @@ def get_cost_by_environment(db: Session, month):
     return cost_by_environment
 
 
-# def get_cost_forecast(db: Session, month: date):
-
-#     selected_month = datetime.combine(
-#         month,
-#         time.min
-#     )
-
-#     historical_data = (
-#         db.query(
-#             MonthlyCost.month_start,
-#             func.sum(MonthlyCost.total_costs).label("total_cost")
-#         )
-#         .filter(
-#             MonthlyCost.month_start <= selected_month
-#         )
-#         .group_by(
-#             MonthlyCost.month_start
-#         )
-#         .order_by(
-#             MonthlyCost.month_start
-#         )
-#         .all()
-#     )
-
-#     return historical_data
 
 
 def get_all_cost_forecast(db: Session):

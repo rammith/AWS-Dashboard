@@ -27,29 +27,6 @@ router = APIRouter(
 )
 
 
-# @router.get("/total-cost", response_model=TotalCostResponse)
-# def get_total_cost(
-#     month: date,
-#     db: Session = Depends(get_db)
-# ):
-#     return get_total_cost_controller(db, month)
-
-
-# @router.get("/total-accounts", response_model=TotalAccountsResponse)
-# def get_total_accounts(
-#     month: date,
-#     db: Session = Depends(get_db)
-# ):
-#     return get_total_accounts_controller(db, month)
-
-
-# @router.get("/average-daily-cost",response_model=AverageDailyCostResponse)
-# def get_average_daily_cost(
-#     month: date,
-#     db: Session = Depends(get_db)
-# ):
-#     return get_average_daily_cost_controller(db, month)
-
 
 @router.get("/total", response_model=OverviewResponse)
 def get_overview(

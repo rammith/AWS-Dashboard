@@ -94,23 +94,21 @@ def calculate_cost_by_service(db: Session, month):
         "DevOpsAgent": result.devopsagent,
     }
 
-    # Replace None with 0
+    
     services = {
         service: cost or 0
         for service, cost in services.items()
     }
 
-    # Sort services from highest cost to lowest cost
     sorted_services = sorted(
         services.items(),
         key=lambda item: item[1],
         reverse=True
     )
 
-    # Take top 5
+    
     top_5 = sorted_services[:5]
 
-    # Calculate Others
     others = sum(
         cost
         for service, cost in sorted_services[5:]
@@ -124,7 +122,6 @@ def calculate_cost_by_service(db: Session, month):
         for service, cost in top_5
     ]
 
-    # Add Others only if there are remaining services
     if others > 0:
         response.append(
             {

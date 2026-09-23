@@ -1,8 +1,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL ||"http://localhost:8000";
 
-/**
- * Fetch total overview statistics for the given month (YYYY-MM-DD)
- */
+
+// Fetch total overview statistics for the given month (YYYY-MM-DD)
+ 
 export async function getOverviewTotal(month) {
   const response = await fetch(
     `${API_BASE_URL}/api/overview/total?month=${month}`
@@ -13,9 +13,9 @@ export async function getOverviewTotal(month) {
   return response.json();
 }
 
-/**
- * Fetch cost breakdown by account for the given month
- */
+
+// Fetch cost breakdown by account for the given month
+ 
 export async function getCostByAccount(month) {
   const response = await fetch(
     `${API_BASE_URL}/api/overview/cost-by-account?month=${month}`
@@ -26,9 +26,7 @@ export async function getCostByAccount(month) {
   return response.json();
 }
 
-/**
- * Fetch daily cost trend for the given month
- */
+// Fetch daily cost trend for the given month
 export async function getCostTrend(month) {
   const response = await fetch(
     `${API_BASE_URL}/api/overview/cost_trend?month=${month}`
